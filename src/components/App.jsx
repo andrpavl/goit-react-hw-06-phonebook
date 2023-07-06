@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Phonebook } from './Phonebook/Phonebook';
 import { Contacts } from './Contacts/Contacts';
 import { Filter } from './Filter/Filter';
 import css from './App.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts, getFilter } from '../redux/selectors';
+import { setFilter } from '../redux/action';
+import { deleteContact } from '../redux/action';
 
 export function App() {
-  const [contacts, setContacts] = useState(
-    JSON.parse(localStorage.getItem('contacts')) ?? []
-  );
-  const [filter, setFilter] = useState('');
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
 
   const addContact = (name, number) => {
     const isInContacts = contacts.some(contact => contact.name === name);
@@ -19,26 +22,21 @@ export function App() {
         name: name,
         number: number,
       };
-      setContacts(prevContacts => [...prevContacts, newContact]);
+      dispatch(addContact(newContact));
     }
   };
 
   const handleChange = e => {
-    setFilter(e.target.value);
+    dispatch(setFilter(e.target.value));
   };
-
-  const deleteContact = name => {
-    setContacts(prevContacts =>
-      prevContacts.filter(contact => contact.name !== name)
-    );
-  };
-
+const handleDeleteContact = id => {
+  dispatch(deleteContact(id));
+};
   const normalizedFilter = filter.toLowerCase();
   const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(normalizedFilter)
   );
 
-  
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
@@ -50,7 +48,10 @@ export function App() {
 
       <h2>Contacts</h2>
       <Filter value={filter} handleChange={handleChange} />
-      <Contacts contacts={filteredContacts} deleteContact={deleteContact} />
+      <Contacts
+        contacts={filteredContacts}
+        deleteContact={handleDeleteContact}
+      />
     </div>
   );
 }

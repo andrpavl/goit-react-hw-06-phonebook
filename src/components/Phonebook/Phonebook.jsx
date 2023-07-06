@@ -1,9 +1,12 @@
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import css from './Phonebook.module.css';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/action';
 import { useState } from 'react';
 
-export function Phonebook({ addContact }) {
+export function Phonebook() {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -25,7 +28,12 @@ export function Phonebook({ addContact }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    addContact(name, number);
+    const newContact = {
+      id: nanoid(),
+      name: name,
+      number: number,
+    };
+    dispatch(addContact(newContact));
     setName('');
     setNumber('');
   };
