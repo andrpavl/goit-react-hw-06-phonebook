@@ -5,20 +5,22 @@ import { Filter } from './Filter/Filter';
 import css from './App.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts, getFilter } from '../redux/selectors';
-import { setFilter } from '../redux/action';
-import { deleteContact } from '../redux/action';
+import { setFilterAction, deleteContact, addContact } from '../redux/reducer';
+import { nanoid } from 'nanoid';
 
 export function App() {
   const contacts = useSelector(getContacts);
   const filter = useSelector(getFilter);
   const dispatch = useDispatch();
 
-  const addContact = (name, number) => {
-    const isInContacts = contacts.some(contact => contact.name === name);
+  const handleAddContact = (name, number) => {
+    const isInContacts = contacts.find(contact => contact.name === name);
     if (isInContacts) {
       alert(`${name} is already in contacts`);
+      console.log(contacts)
     } else {
       const newContact = {
+        id: nanoid(),
         name: name,
         number: number,
       };
@@ -27,7 +29,7 @@ export function App() {
   };
 
   const handleChange = e => {
-    dispatch(setFilter(e.target.value));
+    dispatch(setFilterAction(e.target.value));
   };
 const handleDeleteContact = id => {
   dispatch(deleteContact(id));
@@ -44,7 +46,7 @@ const handleDeleteContact = id => {
   return (
     <div className={css.application}>
       <h1>Phonebook</h1>
-      <Phonebook addContact={addContact} />
+      <Phonebook addContact={handleAddContact} />
 
       <h2>Contacts</h2>
       <Filter value={filter} handleChange={handleChange} />

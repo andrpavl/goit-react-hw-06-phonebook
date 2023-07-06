@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import css from './Phonebook.module.css';
 import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/action';
+import { addContact } from 'redux/reducer';
 import { useState } from 'react';
 
 export function Phonebook() {

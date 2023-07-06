@@ -1,40 +1,43 @@
-import { combineReducers } from 'redux';
+import { createSlice } from '@reduxjs/toolkit';
 
-const contactsInitialState = { contacts: [] };
-
-const contactsReducer = (state = contactsInitialState, action) => {
-  switch (action.type) {
-    case 'addContact':
-      return { ...state, contacts: [...state.contacts, action.payload] };
-    case 'deleteContact':
+const contactsSlice = createSlice({
+  name: 'contacts',
+  initialState: { contacts: [] },
+  reducers: {
+    addContact(state, action) {
+      return {
+        ...state,
+        contacts: [...state.contacts, action.payload],
+      };
+    },
+    deleteContact(state, action) {
       return {
         ...state,
         contacts: state.contacts.filter(
           contact => contact.id !== action.payload
         ),
       };
-    default:
-      return state;
-  }
-};
+    },
+  },
+});
 
-const filterInitialState = {
-  filter: '',
-};
-
-const filterReducer = (state = filterInitialState, action) => {
-  switch (action.type) {
-    case 'setFilter':
+const filterSlice = createSlice({
+  name: 'filter',
+  initialState: {
+    filter: '',
+  },
+  reducers: {
+    setFilter(state, action) {
       return {
         ...state,
         filter: action.payload,
       };
-    default:
-      return state;
-  }
-};
-
-export const rootReducer = combineReducers({
-  contacts: contactsReducer,
-  filter: filterReducer,
+    },
+  },
 });
+
+export const contactsReducer = contactsSlice.reducer;
+export const filterReducer = filterSlice.reducer;
+
+export const {addContact, deleteContact} = contactsSlice.actions;
+export const setFilterAction = filterSlice.actions.setFilter;

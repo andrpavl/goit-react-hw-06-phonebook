@@ -3,10 +3,12 @@ import css from './Contacts.module.css';
 export function Contacts({ contacts, deleteContact }) {
   const onDeleteContact = id => deleteContact(id);
   // console.log(contacts)
+ 
   return (
+    
     <ul className={css.list}>
       {contacts.map(contact => (
-        <li key={contact.name}>
+        <li key={contact.id}>
           {contact.name}: {contact.number}
           <button
             className={css.deleteBtn}
