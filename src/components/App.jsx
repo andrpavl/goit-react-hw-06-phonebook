@@ -14,7 +14,7 @@ export function App() {
   const dispatch = useDispatch();
 
   const handleAddContact = (name, number) => {
-    const isInContacts = contacts.find(contact => contact.name === name);
+    const isInContacts = contacts.some(contact => contact.name === name);
     if (isInContacts) {
       alert(`${name} is already in contacts`);
       console.log(contacts)
