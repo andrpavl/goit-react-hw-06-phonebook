@@ -21,23 +21,5 @@ const contactsSlice = createSlice({
   },
 });
 
-const filterSlice = createSlice({
-  name: 'filter',
-  initialState: {
-    filter: '',
-  },
-  reducers: {
-    setFilter(state, action) {
-      return {
-        ...state,
-        filter: action.payload,
-      };
-    },
-  },
-});
-
 export const contactsReducer = contactsSlice.reducer;
-export const filterReducer = filterSlice.reducer;
-
-export const {addContact, deleteContact} = contactsSlice.actions;
-export const setFilterAction = filterSlice.actions.setFilter;
+export const { addContact, deleteContact } = contactsSlice.actions;
